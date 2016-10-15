@@ -1,0 +1,70 @@
+<!--Jamborton-->
+<div class="jumbotron" ng-style="{'background-image':'url(' + ticket.info.backgroundImage + ')'}">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+
+                <center>
+
+                    <!--Title-->
+                    <div>
+                        <h1>Blog</h1>
+                    </div>
+
+                </center>
+
+            </div>
+        </div>
+    </div>
+</div>
+<section class="container">
+
+    <form class="form-inline">
+        <div class="form-group">
+            <label for="inputTitle">Title</label>
+            <input ng-model="newText.title" type="text" class="form-control" id="inputTitle" placeholder="Enter a suitable title">
+        </div>
+        <div class="form-group">
+            <label for="inputImage">Title Image</label>
+            <input ng-model="newText.mainImage" type="url" class="form-control" id="inputImage" placeholder="http://">
+        </div>
+    </form>
+    <br>
+    <div text-angular ng-model="newText.article"></div>
+    <hr>
+    <button type="button" class="btn btn-primary btn-lg" ng-click="blog.push({title:newText.title,mainImage:newText.mainImage,article:newText.article,status:false})">Save Post</button>
+    <hr>
+    <div class="table-responsive">
+
+        <table class="table table-bordered table-striped">
+
+            <tr style="font-weight:bold;background-color:#38A2FF">
+
+                <td title="Load note to the editor">Load Note To Edit</td>
+                <td title="Title">Title</td>
+                <td title="Main Image">Title Image</td>
+                <td title="Article">Article</td>
+            </tr>
+            <tr ng-repeat="(key,btex) in blog">
+
+                <!--Load Article-->
+                <td>
+                    <button type="button" class="btn btn-default btn-sm" ng-click="newText.title=btex.title;newText.mainImage=btex.mainImage;newText.article=btex.article"><span class="glyphicon glyphicon-modal-window" aria-hidden="true"></span></button>
+                </td>
+
+                <!--Title-->
+                <td>{{btex.title}}</td>
+
+                <!--Main Image-->
+                <td>
+                    <img ng-src="{{btex.mainImage}}" />
+                </td>
+
+                <!--Article-->
+                <td ng-bind-html="btex.article"></td>
+
+            </tr>
+
+        </table>
+    </div>
+</section>

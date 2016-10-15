@@ -1,0 +1,46 @@
+<!--Jamborton-->
+<div class="jumbotron" ng-style="{'background-image':'url(' + ticket.info.backgroundImage + ')'}">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+
+                <center>
+
+                    <!--Title-->
+                    <div>
+                        <h1>Text Editor</h1>
+                    </div>
+
+                </center>
+
+            </div>
+        </div>
+    </div>
+</div>
+<section class="container">
+    <div text-angular ng-model="newText.edited"></div>
+    <hr>
+    <button type="button" class="btn btn-primary btn-lg" ng-click="text.push({edited:newText.edited})">Save Note</button>
+    <hr>
+    <div class="table-responsive">
+
+        <table class="table table-bordered table-striped">
+
+            <tr style="font-weight:bold;background-color:#38A2FF">
+
+                <td title="Load note to the editor">Load Note To Edit</td>
+                <td title="Note">Note</td>
+            </tr>
+            <tr ng-repeat="(key,tex) in text">
+
+                <!--Load Note-->
+                <td>
+                    <button type="button" class="btn btn-default btn-sm" ng-click="newText.edited=tex.edited"><span class="glyphicon glyphicon-modal-window" aria-hidden="true"></span></button>
+                </td>
+
+                <!--Note-->
+                <td ng-bind-html="tex.edited"></td>
+            </tr>
+
+        </table>
+</section>

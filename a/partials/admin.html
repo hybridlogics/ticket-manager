@@ -1,0 +1,218 @@
+<style>
+    .editable-bstime .editable-input i.icon-chevron-up:before {
+        content: '\e113';
+    }
+    
+    .editable-bstime .editable-input i.icon-chevron-down:before {
+        content: '\e114';
+    }
+    
+    .editable-bstime .editable-input i.icon-chevron-up,
+    .editable-bstime .editable-input i.icon-chevron-down {
+        position: relative;
+        top: 1px;
+        display: inline-block;
+        font-family: 'Glyphicons Halflings';
+        -webkit-font-smoothing: antialiased;
+        font-style: normal;
+        font-weight: normal;
+        line-height: 1;
+    }
+
+</style>
+<script>
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
+</script>
+
+<!--Details moadal-->
+<script type="text/ng-template" id="myModalContent.html">
+    <div class="modal-header">
+        <h4 class="text-right" ng-if="items.status=='Resolved'" style="font-weight:bold;color:#0e8b08">{{items.status}}</h4>
+        <h4 class="text-right" ng-if="items.status=='Open'" style="font-weight:bold;color:#b8b509">{{items.status}}</h4>
+        <h4 class="text-right" ng-if="items.status=='Closed'" style="font-weight:bold;color:#c70909">{{items.status}}</h4>
+        <h2 class="modal-title">{{items.title}}</h2>
+    </div>
+    <div class="modal-body">
+        <dl class="dl-horizontal">
+            <dt>Description:</dt>
+            <dd>{{items.description}}</dd>
+            <dt>Create Time:</dt>
+            <dd>{{items.createTime | date:'hh:mm a'}}</dd>
+            <dt>Update Time:</dt>
+            <dd>{{items.updateTime | date:'hh:mm a'}}</dd>
+            <dt>User ID:</dt>
+            <dd>{{items.userID}}</dd>
+        </dl>
+        <hr>
+        <h4>Administrators Responses</h4>
+        <dl class="dl-horizontal" ng-repeat="item in items.responses">
+            <dt>Admin ID:</dt>
+            <dd>{{item.adminID}}</dd>
+            <dt>Response:</dt>
+            <dd>{{item.message}}</dd>
+            <hr>
+        </dl>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">Close</button>
+    </div>
+</script>
+
+<!--Jamborton-->
+<div class="jumbotron" ng-style="{'background-image':'url(' + ticket.info.backgroundImage + ')'}">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+
+                <center>
+
+                    <!--Title-->
+                    <div>
+                        <h1 ng-show="titleShow">{{ticket.titleAdmin}}</h1>
+                    </div>
+
+                </center>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--POST/GET/UPDATE/DELETE Ticket-->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="tab-pane">
+                <div class="row">
+
+                    <!--Ticket List-->
+                    <div class="table-responsive">
+
+                        <table class="table table-bordered table-striped">
+
+                            <tr style="font-weight:bold;background-color:#38A2FF">
+
+                                <td data-container="body" data-toggle="tooltip" data-placement="top" title="See ticket details."></td>
+                                <td data-container="body" data-toggle="tooltip" data-placement="top" title="The ID of uer who issued the ticket.">User ID</td>
+                                <td data-container="body" data-toggle="tooltip" data-placement="top" title="Title of the ticket.">Title</td>
+                                <td data-container="body" data-toggle="tooltip" data-placement="top" title="Current status of the ticket.">Status</td>
+                                <td data-container="body" data-toggle="tooltip" data-placement="top" title="The time when the ticket was issued.">Time Created</td>
+                                <td data-container="body" data-toggle="tooltip" data-placement="top" title="Administrators responses.">Admin Responses</td>
+
+                            </tr>
+
+                            <tr ng-repeat="(key,issue) in ticket.issues">
+
+                                <!--View Details-->
+                                <td>
+                                    <button type="button" class="btn btn-default btn-sm" ng-click="details(issue);open();"><span class="glyphicon glyphicon-modal-window" aria-hidden="true"></span></button>
+                                </td>
+
+                                <!--User ID-->
+                                <td>{{issue.userID}}</td>
+
+                                <!--Title-->
+                                <td>{{issue.title}}</td>
+
+                                <!--Status Green-->
+                                <td ng-if="issue.status=='Resolved'">
+                                    <a style="font-weight:bold;color:#0e8b08" href="#" editable-select="issue.status" e-ng-options="s.value as s.text for s in statuses">{{issue.status}}</a>
+                                </td>
+                                <!--Status Yellow-->
+                                <td ng-if="issue.status=='Open'">
+                                    <a style="font-weight:bold;color:#b8b509" href="#" editable-select="issue.status" e-ng-options="s.value as s.text for s in statuses">{{issue.status}}</a>
+                                </td>
+                                <!--Status Red-->
+                                <td ng-if="issue.status=='Closed'">
+                                    <a style="font-weight:bold;color:#c70909" href="#" editable-select="issue.status" e-ng-options="s.value as s.text for s in statuses">{{issue.status}}</a>
+                                </td>
+
+                                <!--Last Orders-->
+                                <td>{{issue.createTime | date:'hh:mm a'}}</td>
+
+                                <!--Administrators Responses-->
+                                <td>
+                                    <dl class="dl-horizontal">
+                                        <div ng-repeat="response in issue.responses">
+                                            <dt>{{response.adminID}}:</dt>
+                                            <dd>{{response.message}}</dd>
+                                        </div>
+                                    </dl>
+
+                                    <div class="form-inline">
+                                        <div class="form-group">
+                                            <label for="exampleInputAdminID">Admin ID</label>
+                                            <input ng-model="newResponse.adminID" type="text" class="form-control" id="exampleInputAdminID" placeholder="Administrator ID">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputResponse">Response</label>
+                                            <input ng-model="newResponse.message" class="form-control" id="exampleInputResponse" placeholder="Enter a response...">
+                                        </div>
+                                        <button ng-click="ticket.issues[key].responses.push({adminID:newResponse.adminID,message:newResponse.message});save();" class="btn btn-primary btn-sm">
+                                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                        </button>
+                                    </div>
+                                </td>
+
+                            </tr>
+
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Blog Control-->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1>Blog Control</h1>
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-striped">
+
+                    <tr style="font-weight:bold;background-color:#38A2FF">
+
+                        <td title="Status">Status</td>
+                        <td title="Title">Title</td>
+                        <td title="Main Image">Title Image</td>
+                        <td title="Article">Article</td>
+                    </tr>
+                    <tr ng-repeat="(key,btex) in blog">
+
+                        <!--Status-->
+                        <!--Status Green-->
+                        <td ng-if="btex.status==true">
+                            <a style="font-weight:bold;color:#0e8b08" href="#" editable-select="btex.status" e-ng-options="bstat.value as bstat.text for bstat in bstatuses">Approve</a>
+                        </td>
+                        <!--Status Red-->
+                        <td ng-if="btex.status==false">
+                            <a style="font-weight:bold;color:#c70909" href="#" editable-select="btex.status" e-ng-options="bstat.value as bstat.text for bstat in bstatuses">Unapprove</a>
+                        </td>
+
+                        <!--Title-->
+                        <td>{{btex.title}}</td>
+
+                        <!--Main Image-->
+                        <td>
+                            <img ng-src="{{btex.mainImage}}" />
+                        </td>
+
+                        <!--Article-->
+                        <td ng-bind-html="btex.article"></td>
+
+                    </tr>
+
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,65 @@
+{
+    "ticket": {
+        "titleAdmin": "Admin",
+        "userID": "abc123",
+        "adminID": "def456",
+        "titleClient": "Ticket Client",
+        "response": "",
+        "categories": ["Standard", "Economy", "Business"],
+        "info": {
+            "backgroundImage": "",
+            "logo": ""
+        },
+        "issues": [
+            {
+                "status": "Open",
+                "description": "Luxury ticket",
+                "id": "1",
+                "title": "Golden Ticket",
+                "createTime": "1446483149184",
+                "updateTime": "",
+                "userID": "abc123",
+                "responses": [
+                    {
+                        "adminID": "klm101112",
+                        "message": "The project wil be completed in time. Dont you worry."
+                    }
+                ]
+            },
+            {
+                "status": "Resolved",
+                "description": "For all",
+                "id": "2",
+                "title": "Bronze Ticket",
+                "createTime": "1446483149184",
+                "updateTime": "",
+                "userID": "def456",
+                "responses": [
+                    {
+                        "adminID": "nop131415",
+                        "message": "No response"
+                    },
+                    {
+                        "adminID": "klm101112",
+                        "message": "The project wil be completed in time. Dont you worry."
+                    }
+                ]
+            },
+            {
+                "status": "Closed",
+                "description": "Better than best",
+                "id": "3",
+                "title": "Silver Ticket",
+                "createTime": "1446483149184",
+                "updateTime": "",
+                "userID": "ghi789",
+                "responses": [
+                    {
+                        "adminID": "qrs161718",
+                        "message": "It's not a big issue."
+                    }
+                ]
+            }
+        ]
+    }
+}

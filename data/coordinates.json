@@ -1,0 +1,24 @@
+{
+    "map": {
+        "center": {
+            "latitude": 45,
+            "longitude": -73
+        },
+        "zoom": 7,
+        "bounds": {},
+        "markers": [
+            {
+                "id": 0,
+                "latitude": 45,
+                "longitude": -73,
+                "icon": "unnamed.png"
+            },
+            {
+                "id": 1,
+                "latitude": 15,
+                "longitude": 30,
+                "icon": "unnamed.png"
+            }
+        ]
+    }
+}

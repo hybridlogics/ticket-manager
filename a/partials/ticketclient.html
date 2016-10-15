@@ -1,0 +1,152 @@
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
+
+<!--Details moadal-->
+<script type="text/ng-template" id="myModalContent.html">
+    <div class="modal-header">
+        <h4 class="text-right" ng-if="items.status=='Resolved'" style="font-weight:bold;color:#0e8b08">{{items.status}}</h4>
+        <h4 class="text-right" ng-if="items.status=='Open'" style="font-weight:bold;color:#b8b509">{{items.status}}</h4>
+        <h4 class="text-right" ng-if="items.status=='Closed'" style="font-weight:bold;color:#c70909">{{items.status}}</h4>
+        <h2 class="modal-title">{{items.title}}</h2>
+    </div>
+    <div class="modal-body">
+        <dl class="dl-horizontal">
+            <dt>Description:</dt>
+            <dd>{{items.description}}</dd>
+            <dt>Create Time:</dt>
+            <dd>{{items.createTime | date:'hh:mm a'}}</dd>
+            <dt>Update Time:</dt>
+            <dd>{{items.updateTime | date:'hh:mm a'}}</dd>
+            <dt>User ID:</dt>
+            <dd>{{items.userID}}</dd>
+        </dl>
+        <hr>
+        <h4>Administrators Responses</h4>
+        <dl class="dl-horizontal" ng-repeat="item in items.responses">
+            <dt>Admin ID:</dt>
+            <dd>{{item.adminID}}</dd>
+            <dt>Response:</dt>
+            <dd>{{item.message}}</dd>
+            <hr>
+        </dl>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">Close</button>
+    </div>
+</script>
+
+<!--Jamborton-->
+<div class="jumbotron" ng-style="{'background-image':'url(' + ticket.info.backgroundImage + ')'}">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+
+                <center>
+
+                    <!--Title-->
+                    <div>
+                        <h1 ng-show="titleShow">{{ticket.titleClient}}</h1>
+                    </div>
+
+                </center>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Create Ticket-->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="tab-pane">
+                <div class="row">
+
+                    <!--Create Ticket-->
+                    <div class="col-sm-6 col-md-3">
+                        <div class="thumbnail">
+                            <div style="background-color:#eee;padding:10px;" ng-init="newTicket.title='New Ticket';newTicket.status='Open';newTicket.userID='Unknown User'">
+                                <div>
+                                    <div style="display:inline;font-size:20px;font-weight:bold">
+                                        <span>Issue New Ticket</span>
+                                    </div>
+                                    <div style="float:right;display:inline">
+                                        <button ng-click="ticket.issues.push({status:newTicket.status,description:newTicket.description,title:newTicket.title,createTime:createTime,userID:newTicket.userID});save();" class="btn btn-primary btn-sm">
+                                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-inline">
+                                    <label>Title</label>
+                                    <input ng-model="newTicket.title" placeholder="Title" class="form-control">
+                                </div>
+                                <br>
+                                <div>
+                                    <textarea class="form-control" ng-model="newTicket.description" placeholder="Description of issue"></textarea>
+
+                                </div>
+                                <br>
+                                <div class="form-inline">
+                                    <label>User ID</label>
+                                    <input ng-model="newTicket.userID" placeholder="Enter your ID" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!--Ticket List-->
+                    <div class="table-responsive">
+
+                        <table class="table table-bordered table-striped">
+
+                            <tr style="font-weight:bold;background-color:#38A2FF">
+
+                                <td data-container="body" data-toggle="tooltip" data-placement="top" title="See ticket details."></td>
+                                <td data-container="body" data-toggle="tooltip" data-placement="top" title="The ID of uer who issued the ticket.">User ID</td>
+                                <td data-container="body" data-toggle="tooltip" data-placement="top" title="Title of the ticket.">Title</td>
+                                <td data-container="body" data-toggle="tooltip" data-placement="top" title="Current status of the ticket.">Status</td>
+                                <td data-container="body" data-toggle="tooltip" data-placement="top" title="The time when the ticket was issued.">Time Created</td>
+
+                            </tr>
+
+                            <tr ng-repeat="(key,issue) in ticket.issues">
+
+                                <!--View Details-->
+                                <td>
+                                    <button type="button" class="btn btn-default btn-sm" ng-click="details(issue);open();"><span class="glyphicon glyphicon-modal-window" aria-hidden="true"></span></button>
+                                </td>
+
+                                <!--User ID-->
+                                <td>{{issue.userID}}</td>
+
+                                <!--Title-->
+                                <td>{{issue.title}}</td>
+
+                                <!--Status Green-->
+                                <td ng-if="issue.status=='Resolved'" style="font-weight:bold;color:#0e8b08">{{issue.status}}</td>
+
+                                <!--Status Yellow-->
+                                <td ng-if="issue.status=='Open'" style="font-weight:bold;color:#b8b509">{{issue.status}}</td>
+
+                                <!--Status Red-->
+                                <td ng-if="issue.status=='Closed'" style="font-weight:bold;color:#c70909">{{issue.status}}</td>
+
+                                <!--Last Orders-->
+                                <td>{{issue.createTime | date:'hh:mm a'}}</td>
+
+                            </tr>
+
+                        </table>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
